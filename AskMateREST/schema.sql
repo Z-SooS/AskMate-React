@@ -11,6 +11,7 @@ CREATE TABLE web_user (
     id int primary key IDENTITY(1,1),
     username varchar(20) NOT NULL ,
     password char(60) NOT NULL ,
+    email varchar(100) NOT NULL,
     reputation int NOT NULL
 )
 GO
