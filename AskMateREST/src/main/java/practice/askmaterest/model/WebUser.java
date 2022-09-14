@@ -7,4 +7,6 @@ public class WebUser extends DbObject{
     public String password;
 
     public String email;
+
+    public int reputation;
 }
