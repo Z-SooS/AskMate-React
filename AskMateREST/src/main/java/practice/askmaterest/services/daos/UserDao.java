@@ -7,7 +7,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 @Service
-public class UserDao implements IDao<WebUser>{
+public class UserDao implements IUserDao{
 
     private final DataSource datasource;
 
