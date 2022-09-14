@@ -1,13 +1,14 @@
-package practice.askmaterest.services.daos;
+package practice.askmaterest.services.daos.implementation;
 
 import org.springframework.stereotype.Service;
 import practice.askmaterest.model.WebUser;
+import practice.askmaterest.services.daos.IUserDao;
 
 import javax.sql.DataSource;
 import java.sql.*;
 
 @Service
-public class UserDao implements IUserDao{
+public class UserDao implements IUserDao {
 
     private final DataSource datasource;
 
@@ -21,13 +22,13 @@ public class UserDao implements IUserDao{
         {
             String query = "INSERT INTO web_user (username, password, email, reputation) VALUES(?,?,?,0)";
             PreparedStatement statement = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
-            statement.setString(1, objToAdd.username);
-            statement.setString(2, objToAdd.password);
-            statement.setString(3, objToAdd.email);
+            statement.setString(1, objToAdd.getUsername());
+            statement.setString(2, objToAdd.getPassword());
+            statement.setString(3, objToAdd.getEmail());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
-            objToAdd.id = resultSet.getLong(1);
+            objToAdd.setId(resultSet.getLong(1));
             return objToAdd;
         }
         catch (SQLException e)
@@ -129,10 +130,10 @@ public class UserDao implements IUserDao{
             return null;
         }
         WebUser queryUser = new WebUser();
-        queryUser.id = resultSet.getLong("id");
-        queryUser.username = resultSet.getString("username");
-        queryUser.email = resultSet.getString("email");
-        queryUser.reputation = resultSet.getInt("reputation");
+        queryUser.setId(resultSet.getLong("id"));
+        queryUser.setUsername(resultSet.getString("username"));
+        queryUser.setEmail(resultSet.getString("email"));
+        queryUser.setReputation(resultSet.getInt("reputation"));
         return queryUser;
     }
 }
