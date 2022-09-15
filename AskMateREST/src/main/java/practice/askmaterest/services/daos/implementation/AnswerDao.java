@@ -74,7 +74,7 @@ public class AnswerDao implements IAnswerDao {
     public List<Answer> getAllAnswersForUser(long searchedId, GetQueryFor target) {
         try(Connection conn = dataSource.getConnection())
         {
-            String column = target.equals(GetQueryFor.USER) ? "user_id" : target.equals(GetQueryFor.QUESTION) ? "question_id" : "answer_id";
+            String column = target.equals(GetQueryFor.USER) ? "user_id" : "question_id";
             String query = String.format("SELECT id, user_id, question_id, message FROM answer WHERE %s = ?",column);
             PreparedStatement statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             statement.setLong(1,searchedId);
