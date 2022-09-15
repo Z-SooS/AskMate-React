@@ -45,14 +45,6 @@ CREATE TABLE question_tag(
     tag_id int foreign key references tag(id)
 )
 GO
-CREATE TABLE comment(
-    id int primary key IDENTITY (1,1),
-    user_id int NOT NULL FOREIGN KEY REFERENCES web_user(id),
-    question_id int foreign key REFERENCES question(id),
-    answer_id int foreign key REFERENCES answer(id),
-    message varchar(max)
-)
-GO
 
 CREATE TRIGGER [DELETE_USER]
     ON dbo.[web_user]
@@ -64,7 +56,6 @@ BEGIN
     DELETE FROM friendship WHERE friend_id IN (SELECT id FROM DELETED);
     DELETE FROM answer WHERE user_id IN (SELECT id FROM DELETED);
     DELETE FROM question WHERE user_id IN (SELECT id FROM DELETED);
-    DELETE FROM comment WHERE user_id IN (SELECT id FROM DELETED);
     DELETE FROM web_user WHERE id IN (SELECT id FROM DELETED);
 END
 GO
@@ -75,19 +66,8 @@ CREATE TRIGGER [DELETE_QUESTION]
 BEGIN
     SET NOCOUNT ON;
     DELETE FROM [answer] WHERE question_id IN (SELECT id FROM DELETED);
-    DELETE FROM [comment] WHERE question_id IN (SELECT id FROM DELETED);
     DELETE FROM [question_tag] WHERE question_id IN (SELECT id FROM DELETED);
     DELETE FROM [question] WHERE id IN (SELECT id FROM DELETED);
-END
-GO
-CREATE TRIGGER [DELETE_ANSWER]
-    ON dbo.[answer]
-    INSTEAD OF DELETE
-    AS
-BEGIN
-    SET NOCOUNT ON;
-    DELETE FROM [comment] WHERE answer_id IN (SELECT id FROM DELETED);
-    DELETE FROM [comment] WHERE id IN (SELECT id FROM DELETED);
 END
 GO
 CREATE TRIGGER [DELETE_TAG]
