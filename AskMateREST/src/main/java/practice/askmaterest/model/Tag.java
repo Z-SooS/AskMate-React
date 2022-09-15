@@ -1,5 +1,13 @@
 package practice.askmaterest.model;
 
 public class Tag extends DbObject{
-    public String name;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
