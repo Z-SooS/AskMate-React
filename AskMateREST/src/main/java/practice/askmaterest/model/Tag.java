@@ -1,6 +1,6 @@
 package practice.askmaterest.model;
 
-public class Tag extends DbObject{
+public class Tag{
     private String name;
 
     public String getName() {
