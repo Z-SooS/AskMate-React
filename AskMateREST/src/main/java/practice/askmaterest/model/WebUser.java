@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Set;
 
 @Entity
@@ -15,9 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Embeddable
-public class WebUser implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 8647904518137212569L;
+public class WebUser{
     @Id
     private Long id;
     private String username;
