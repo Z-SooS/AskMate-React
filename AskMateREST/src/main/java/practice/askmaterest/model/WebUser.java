@@ -14,15 +14,20 @@ import java.util.Set;
 @Setter
 @Embeddable
 public class WebUser{
-    @Id
-    private Long id;
-    private String username;
-    private String password;
+
+    @Column(unique = true)
     private String email;
+
+    @Id
+    private String username;
+    @Column(length = 60)
+    private String password;
+
+    @Column(columnDefinition = "integer default 0")
     private int reputation;
+
     @OneToMany
     private Set<Friendship> friendships;
-
 
     @JsonIgnore
     public String getPassword() {
