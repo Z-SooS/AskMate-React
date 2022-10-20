@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import practice.askmaterest.model.securityModel.LoginDetails;
+import practice.askmaterest.model.securityModel.RegistrationDetails;
 import practice.askmaterest.security.CookieAgent;
 import practice.askmaterest.security.EncoderAgent;
 import practice.askmaterest.services.WebUserService;
@@ -35,5 +36,12 @@ public class UserAuthController {
         CookieAgent.getJWTCookies(encoderAgent.generateJwt(loginDetails.getUsername(),loginDetails.getPassword())).forEach(response::addCookie);
 
         return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI.create("/")).build();
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Void> doRegister(@RequestBody RegistrationDetails newUserDetails) {
+        boolean userDidNotExist = webUserService.AddWebUserIfNotExist(newUserDetails.toUser());
+        if(userDidNotExist) return ResponseEntity.status(HttpStatus.CREATED).location(URI.create("/")).build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 }
