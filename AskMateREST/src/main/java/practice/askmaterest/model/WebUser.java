@@ -29,7 +29,7 @@ public class WebUser{
 
     @OneToMany
     private Set<Friendship> friendships;
-
+    @Enumerated(EnumType.STRING)
     private AskRole role;
 
     @JsonIgnore
