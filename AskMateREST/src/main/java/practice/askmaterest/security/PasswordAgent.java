@@ -1,13 +1,13 @@
-package practice.askmaterest.utility;
+package practice.askmaterest.security;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PasswordAgent {
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public PasswordAgent(BCryptPasswordEncoder passwordEncoder) {
+    public PasswordAgent(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
