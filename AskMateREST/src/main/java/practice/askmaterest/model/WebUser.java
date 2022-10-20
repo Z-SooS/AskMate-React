@@ -2,6 +2,7 @@ package practice.askmaterest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import practice.askmaterest.model.modelenum.AskRole;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -28,6 +29,8 @@ public class WebUser{
 
     @OneToMany
     private Set<Friendship> friendships;
+
+    private AskRole role;
 
     @JsonIgnore
     public String getPassword() {
