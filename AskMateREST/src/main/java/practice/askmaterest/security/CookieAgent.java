@@ -1,0 +1,44 @@
+package practice.askmaterest.security;
+
+import org.springframework.stereotype.Component;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import static practice.askmaterest.security.JwtUtil.base64Encode;
+
+@Component
+public class CookieAgent {
+    public static final String signatureCookie64 = base64Encode("signatureCookie");
+    public static final String headerPayloadCookie64 = base64Encode("headerPayloadCookie");
+
+
+    private static String getCookieValue(HttpServletRequest req, String cookieName) {
+        return Arrays.stream(req.getCookies())
+                .filter(c -> c.getName().equals(cookieName))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElse(null);
+    }
+
+    public static Set<Cookie> getJWTCookies(String jwt) {
+        Set<Cookie> cookies = new HashSet<>();
+        var jwtSegments = jwt.split("\\.");
+
+        Cookie signatureCookie = new Cookie(CookieAgent.signatureCookie64, jwtSegments[2]);
+        Cookie payloadCookie = new Cookie(CookieAgent.headerPayloadCookie64, jwtSegments[0] + "." + jwtSegments[1]);
+        signatureCookie.setPath("/");
+        payloadCookie.setPath("/");
+        signatureCookie.setHttpOnly(true);
+        signatureCookie.setSecure(true);
+        payloadCookie.setSecure(true);
+        payloadCookie.setMaxAge(-1);
+
+        cookies.add(signatureCookie);
+        cookies.add(payloadCookie);
+        return cookies;
+    }
+}
