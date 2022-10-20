@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static practice.askmaterest.security.JwtUtil.base64Encode;
+import static practice.askmaterest.security.EncoderAgent.base64Encode;
 
 @Component
 public class CookieAgent {
