@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.sql.Timestamp;
 
 @Entity
 @AllArgsConstructor
@@ -22,4 +23,5 @@ public class Answer{
     private WebUser user;
     private String message;
     private String imageUrl;
+    private Timestamp dateCreated;
 }
