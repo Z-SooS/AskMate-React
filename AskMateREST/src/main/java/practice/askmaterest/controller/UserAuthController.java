@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import practice.askmaterest.model.securityModel.LoginDetails;
 import practice.askmaterest.model.securityModel.RegistrationDetails;
-import practice.askmaterest.security.CookieAgent;
+import practice.askmaterest.security.CookieMethods;
 import practice.askmaterest.security.EncoderAgent;
 import practice.askmaterest.services.WebUserService;
 
@@ -33,7 +33,7 @@ public class UserAuthController {
         boolean isAuthenticated = webUserService.isCorrectLogin(loginDetails);
         if (!isAuthenticated) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-        CookieAgent.getJWTCookies(encoderAgent.generateJwt(loginDetails.getUsername(),loginDetails.getPassword())).forEach(response::addCookie);
+        CookieMethods.getJWTCookies(encoderAgent.generateJwt(loginDetails.getUsername(),loginDetails.getPassword())).forEach(response::addCookie);
 
         return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI.create("/")).build();
     }

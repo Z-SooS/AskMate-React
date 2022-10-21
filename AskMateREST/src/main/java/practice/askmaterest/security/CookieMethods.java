@@ -11,12 +11,12 @@ import java.util.Set;
 import static practice.askmaterest.security.EncoderAgent.base64Encode;
 
 @Component
-public class CookieAgent {
+public class CookieMethods {
     public static final String signatureCookie64 = base64Encode("signatureCookie");
     public static final String headerPayloadCookie64 = base64Encode("headerPayloadCookie");
 
 
-    private static String getCookieValue(HttpServletRequest req, String cookieName) {
+    public static String getCookieValue(HttpServletRequest req, String cookieName) {
         return Arrays.stream(req.getCookies())
                 .filter(c -> c.getName().equals(cookieName))
                 .findFirst()
@@ -28,8 +28,8 @@ public class CookieAgent {
         Set<Cookie> cookies = new HashSet<>();
         var jwtSegments = jwt.split("\\.");
 
-        Cookie signatureCookie = new Cookie(CookieAgent.signatureCookie64, jwtSegments[2]);
-        Cookie payloadCookie = new Cookie(CookieAgent.headerPayloadCookie64, jwtSegments[0] + "." + jwtSegments[1]);
+        Cookie signatureCookie = new Cookie(CookieMethods.signatureCookie64, jwtSegments[2]);
+        Cookie payloadCookie = new Cookie(CookieMethods.headerPayloadCookie64, jwtSegments[0] + "." + jwtSegments[1]);
         signatureCookie.setPath("/");
         payloadCookie.setPath("/");
         signatureCookie.setHttpOnly(true);
