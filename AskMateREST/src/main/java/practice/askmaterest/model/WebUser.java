@@ -5,7 +5,6 @@ import lombok.*;
 import practice.askmaterest.model.modelenum.AskRole;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -14,7 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Embeddable
-public class WebUser{
+public class WebUser {
 
     @Column(unique = true)
     private String email;
@@ -27,8 +26,6 @@ public class WebUser{
     @Column(columnDefinition = "integer default 0")
     private int reputation;
 
-    @OneToMany
-    private Set<Friendship> friendships;
     @Enumerated(EnumType.STRING)
     private AskRole role;
 
