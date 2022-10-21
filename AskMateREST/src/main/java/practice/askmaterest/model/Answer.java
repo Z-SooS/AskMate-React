@@ -22,6 +22,5 @@ public class Answer{
     @ManyToOne
     private WebUser user;
     private String message;
-    private String imageUrl;
     private Timestamp dateCreated;
 }

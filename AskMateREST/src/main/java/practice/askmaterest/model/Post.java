@@ -23,7 +23,6 @@ public class Post {
     private WebUser user;
     private String title;
     private String message;
-    private String imageUrl;
     @OneToMany
     private Set<Tag> tags;
     private Timestamp dateCreated;
