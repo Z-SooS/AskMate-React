@@ -8,6 +8,8 @@ import practice.askmaterest.model.securityModel.LoginDetails;
 import practice.askmaterest.security.PasswordAgent;
 import practice.askmaterest.services.daos.WebUserRepo;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class WebUserService {
@@ -42,5 +44,9 @@ public class WebUserService {
         user.setRole(AskRole.ADMIN);
         webUserRepo.save(user);
         return true;
+    }
+
+    public Optional<WebUser> getUserByUsername(String username) {
+        return webUserRepo.findById(username);
     }
 }
