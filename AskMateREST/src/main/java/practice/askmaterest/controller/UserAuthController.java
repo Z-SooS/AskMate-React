@@ -18,12 +18,10 @@ import java.net.URI;
 @RestController
 @RequestMapping("${user_service_path}")
 public class UserAuthController {
-    EncoderAgent encoderAgent;
 
     private final WebUserService webUserService;
 
-    public UserAuthController(EncoderAgent encoderAgent, WebUserService webUserService) {
-        this.encoderAgent = encoderAgent;
+    public UserAuthController(WebUserService webUserService) {
         this.webUserService = webUserService;
     }
 
