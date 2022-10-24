@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import practice.askmaterest.model.modelenum.AskRole;
 import practice.askmaterest.model.securityModel.LoginDetails;
 import practice.askmaterest.model.securityModel.RegistrationDetails;
 import practice.askmaterest.security.CookieMethods;
@@ -28,10 +29,10 @@ public class UserAuthController {
     @PostMapping("/login")
     public ResponseEntity<Void> doLogin(@RequestBody LoginDetails loginDetails, HttpServletResponse response)
     {
-        boolean isAuthenticated = webUserService.isCorrectLogin(loginDetails);
-        if (!isAuthenticated) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        AskRole userRole = webUserService.getRoleForCorrectLogin(loginDetails);
+        if (userRole.equals(AskRole.UNIDENTIFIED)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-        CookieMethods.getJWTCookies(encoderAgent.generateJwt(loginDetails.getUsername(),loginDetails.getPassword())).forEach(response::addCookie);
+        CookieMethods.getJWTCookies(EncoderAgent.generateJwt(loginDetails.getUsername(),loginDetails.getEmail(),userRole)).forEach(response::addCookie);
 
         return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI.create("/")).build();
     }

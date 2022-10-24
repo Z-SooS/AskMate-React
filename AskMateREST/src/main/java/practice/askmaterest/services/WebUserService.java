@@ -14,15 +14,15 @@ public class WebUserService {
     private final WebUserRepo webUserRepo;
     private final PasswordAgent passwordAgent;
 
-    public boolean isCorrectLogin(LoginDetails loginDetails) {
+    public AskRole getRoleForCorrectLogin(LoginDetails loginDetails) {
         var user = webUserRepo.findById(loginDetails.getUsername());
-        if (user.isEmpty()) return false;
+        if (user.isEmpty()) return AskRole.UNIDENTIFIED;
         boolean isCorrectPassword = passwordAgent.matchesPassword(loginDetails.getPassword(), user.get().getPassword());
         if (isCorrectPassword) {
             loginDetails.setEmail(user.get().getEmail());
-            return true;
+            return user.get().getRole();
         }
-        return false;
+        return AskRole.UNIDENTIFIED;
     }
 
     public boolean AddWebUserIfNotExist(WebUser user) {
