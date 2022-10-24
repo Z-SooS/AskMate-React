@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import practice.askmaterest.model.modelenum.AskRole;
 
 @Configuration
 @EnableWebSecurity
@@ -13,11 +15,18 @@ public class ApplicationSecurityConfig {
     @Value("${user_service_path}")
     private String userServicePath;
 
+    @Value("${post_service_path}")
+    private String postServicePath;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         security.httpBasic().disable();
+        security.addFilterBefore(new JwtTokenChecker(), UsernamePasswordAuthenticationFilter.class);
         // TODO: 2022. 10. 19. Use filterChain, unsafe while developing
-        security.csrf().disable().authorizeRequests().antMatchers(userServicePath+"/**").permitAll();
+        security.authorizeRequests().antMatchers(userServicePath+"/*").hasAnyAuthority(AskRole.UNIDENTIFIED.name(),AskRole.USER.name(),AskRole.ADMIN.name());
+        security.authorizeRequests().antMatchers(postServicePath+"/**").hasAnyRole(AskRole.USER.name(),AskRole.ADMIN.name());
+//        security.authorizeRequests().antMatchers(userServicePath+"/**").permitAll();
+        security.csrf().disable();
         return security.build();
     }
 }
