@@ -16,7 +16,8 @@ public class CookieMethods {
     public static final String headerPayloadCookie64 = base64Encode("headerPayloadCookie");
 
 
-    public static String getCookieValue(HttpServletRequest req, String cookieName) {
+    public static String getCookieValue(HttpServletRequest req, String cookieName) throws NullPointerException{
+        if(req.getCookies() == null) return null;
         return Arrays.stream(req.getCookies())
                 .filter(c -> c.getName().equals(cookieName))
                 .findFirst()
