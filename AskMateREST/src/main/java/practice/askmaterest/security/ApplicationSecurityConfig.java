@@ -12,6 +12,12 @@ import practice.askmaterest.model.modelenum.AskRole;
 @Configuration
 @EnableWebSecurity
 public class ApplicationSecurityConfig {
+    private final EncoderAgent encoderAgent;
+
+    public ApplicationSecurityConfig(EncoderAgent encoderAgent) {
+        this.encoderAgent = encoderAgent;
+    }
+
     @Value("${user_service_path}")
     private String userServicePath;
 
@@ -20,12 +26,13 @@ public class ApplicationSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
+        security.requiresChannel(channel ->
+                channel.anyRequest().requiresSecure());
         security.httpBasic().disable();
-        security.addFilterBefore(new JwtTokenChecker(), UsernamePasswordAuthenticationFilter.class);
+        security.addFilterBefore(new JwtTokenChecker(encoderAgent), UsernamePasswordAuthenticationFilter.class);
         // TODO: 2022. 10. 19. Use filterChain, unsafe while developing
         security.authorizeRequests().antMatchers(userServicePath+"/*").hasAnyAuthority(AskRole.UNIDENTIFIED.name(),AskRole.USER.name(),AskRole.ADMIN.name());
-        security.authorizeRequests().antMatchers(postServicePath+"/**").hasAnyRole(AskRole.USER.name(),AskRole.ADMIN.name());
-//        security.authorizeRequests().antMatchers(userServicePath+"/**").permitAll();
+        security.authorizeRequests().antMatchers(postServicePath+"/*").hasAnyAuthority(AskRole.USER.name(),AskRole.ADMIN.name());
         security.csrf().disable();
         return security.build();
     }

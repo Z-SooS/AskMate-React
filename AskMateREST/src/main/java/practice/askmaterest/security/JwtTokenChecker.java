@@ -18,6 +18,11 @@ import static practice.askmaterest.security.CookieMethods.*;
 
 
 public class JwtTokenChecker extends OncePerRequestFilter {
+    private final EncoderAgent encoderAgent;
+
+    public JwtTokenChecker(EncoderAgent encoderAgent) {
+        this.encoderAgent = encoderAgent;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -35,8 +40,11 @@ public class JwtTokenChecker extends OncePerRequestFilter {
         boolean isInvalidToken = false;
         AskRole role = AskRole.UNIDENTIFIED;
         try {
-            var jwt = EncoderAgent.tryValidateToken(usernameInHeader,headerPayload+"."+signature);
-            role = AskRole.valueOf(jwt.getClaim("role").toString());
+            var jwt = encoderAgent.tryValidateToken(usernameInHeader,headerPayload+"."+signature);
+            String requestRole = jwt.getClaim("role").toString();
+            String cleanedRole = requestRole.substring(1, requestRole.length() - 1);
+
+            role = AskRole.valueOf(cleanedRole);
         }catch (JWTVerificationException ignore) {
             isInvalidToken = true;
         }
