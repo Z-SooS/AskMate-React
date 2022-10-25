@@ -12,7 +12,7 @@ public enum AskRole {
 
     public Set<SimpleGrantedAuthority> getGrantedAuthorities(){
         Set<SimpleGrantedAuthority> simpleGrantedAuthorities = new HashSet<>();
-        simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
+        simpleGrantedAuthorities.add(new SimpleGrantedAuthority(this.name()));
         return simpleGrantedAuthorities;
     }
 }
