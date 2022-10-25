@@ -21,9 +21,11 @@ import java.net.URI;
 public class UserAuthController {
 
     private final WebUserService webUserService;
+    private final EncoderAgent encoderAgent;
 
-    public UserAuthController(WebUserService webUserService) {
+    public UserAuthController(WebUserService webUserService, EncoderAgent encoderAgent) {
         this.webUserService = webUserService;
+        this.encoderAgent = encoderAgent;
     }
 
     @PostMapping("/login")
@@ -32,7 +34,7 @@ public class UserAuthController {
         AskRole userRole = webUserService.getRoleForCorrectLogin(loginDetails);
         if (userRole.equals(AskRole.UNIDENTIFIED)) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
-        CookieMethods.getJWTCookies(EncoderAgent.generateJwt(loginDetails.getUsername(),loginDetails.getEmail(),userRole)).forEach(response::addCookie);
+        CookieMethods.getJWTCookies(encoderAgent.generateJwt(loginDetails.getUsername(),loginDetails.getEmail(),userRole)).forEach(response::addCookie);
 
         return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI.create("/")).build();
     }

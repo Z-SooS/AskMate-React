@@ -7,16 +7,18 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import practice.askmaterest.model.modelenum.AskRole;
 
 import java.util.Base64;
 import java.util.Date;
 
+@Component
 public class EncoderAgent {
     @Value("${jwt_secret}")
-    private static String secret;
+    private String secret;
 
-    public static String generateJwt(String username, String email, AskRole role) throws IllegalArgumentException, JWTCreationException {
+    public String generateJwt(String username, String email, AskRole role) throws IllegalArgumentException, JWTCreationException {
         return JWT.create()
                 .withSubject(username)
                 .withClaim("email", email)
@@ -25,7 +27,7 @@ public class EncoderAgent {
                 .withIssuer("AskMateSpring/AskMate")
                 .sign(Algorithm.HMAC256(secret));
     }
-    public static DecodedJWT tryValidateToken(String subject, String token) throws JWTVerificationException{
+    public DecodedJWT tryValidateToken(String subject, String token) throws JWTVerificationException{
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
                 .withSubject(subject)
 //                .withClaim("email", email)
