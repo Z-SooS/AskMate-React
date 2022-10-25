@@ -26,6 +26,8 @@ public class ApplicationSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
+        security.requiresChannel(channel ->
+                channel.anyRequest().requiresSecure());
         security.httpBasic().disable();
         security.addFilterBefore(new JwtTokenChecker(encoderAgent), UsernamePasswordAuthenticationFilter.class);
         // TODO: 2022. 10. 19. Use filterChain, unsafe while developing
