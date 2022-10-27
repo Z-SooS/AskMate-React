@@ -15,18 +15,18 @@ public class AnswerService {
     private final AnswerRepo answerRepo;
 
     private final int numberOfPreviewAnswers = 5;
-    private final Pageable previewPage = PageRequest.of(0,numberOfPreviewAnswers);
+    private final Pageable previewPage = PageRequest.of(0,numberOfPreviewAnswers,Sort.by(Sort.Direction.DESC,"score"));
 
     public AnswerService(AnswerRepo answerRepo) {
         this.answerRepo = answerRepo;
     }
 
     public List<Answer> getAnswerPreviewToPost(Long post) {
-        return answerRepo.findAllByPost_Id(post,previewPage, Sort.by(Sort.Direction.DESC,"score"));
+        return answerRepo.findAllByPost_Id(post,previewPage);
     }
     public List<Answer> getAnswersToPost(Long post, int page, String orderByColumn, String orderDirString) {
         Sort.Direction orderDir = orderDirString.equals("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
         int numberOfAnswersPerPage = 10;
-        return answerRepo.findAllByPost_Id(post,PageRequest.of(page, numberOfAnswersPerPage),Sort.by(orderDir,orderByColumn));
+        return answerRepo.findAllByPost_Id(post,PageRequest.of(page, numberOfAnswersPerPage,Sort.by(orderDir,orderByColumn)));
     }
 }

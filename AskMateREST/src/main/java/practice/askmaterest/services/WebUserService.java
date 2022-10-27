@@ -51,6 +51,6 @@ public class WebUserService {
     }
 
     public List<WebUser> getPopularUsersPage(int page) {
-        return webUserRepo.findAll(PageRequest.of(page,15),Sort.by(Sort.Direction.DESC, "reputation"));
+        return webUserRepo.findAll(PageRequest.of(page,15,Sort.by(Sort.Direction.DESC, "reputation"))).getContent();
     }
 }

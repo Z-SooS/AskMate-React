@@ -50,8 +50,8 @@ public class PostServiceController {
                                                                              @RequestParam(name="order",defaultValue = "score") String orderBy,
                                                                              @RequestParam(name="direction",defaultValue = "DESC") String orderDirString,
                                                                              @RequestParam("tags") int[] tagIds) {
-        Set<Tag> tagSet = new HashSet<>();
-        Arrays.stream(tagIds).forEach(tid -> tagSet.add(Tag.builder().id(tid).build()));
+        Set<Integer> tagSet = new HashSet<>();
+        Arrays.stream(tagIds).forEach(tagSet::add);
         var posts = postService.getPostsForPageWithTag(page,tagSet,orderBy,orderDirString);
         return getResponseEntityDetailSet(posts);
     }

@@ -4,7 +4,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import practice.askmaterest.model.Post;
-import practice.askmaterest.model.Tag;
 import practice.askmaterest.services.daos.PostRepo;
 
 import java.util.List;
@@ -21,13 +20,12 @@ public class PostService {
     }
 
     public List<Post> getPostsForPage(int page, String orderColumn, String orderDirString) {
-        return postRepo.findAll(PageRequest.of(page,numberOfPostsPerPage),
-                Sort.by(orderDirString.equals("DESC")? Sort.Direction.DESC: Sort.Direction.ASC,orderColumn));
+        return postRepo.findAll(PageRequest.of(page,numberOfPostsPerPage,Sort.by(orderDirString.equals("DESC")? Sort.Direction.DESC: Sort.Direction.ASC,orderColumn))).getContent();
     }
-    public List<Post> getPostsForPageWithTag(int page, Set<Tag> tags, String orderColumn, String orderDirString) {
-        return postRepo.findAllByTags(tags,
-                PageRequest.of(page,numberOfPostsPerPage),
-                Sort.by(orderDirString.equals("DESC")? Sort.Direction.DESC: Sort.Direction.ASC,orderColumn));
+    public List<Post> getPostsForPageWithTag(int page, Set<Integer> tags, String orderColumn, String orderDirString) {
+        return postRepo.findAllByTags_IdIn(tags,
+                PageRequest.of(page,numberOfPostsPerPage,Sort.by(orderDirString.equals("DESC")? Sort.Direction.DESC: Sort.Direction.ASC,orderColumn))
+                );
     }
 
     public void SavePost(Post post) {
