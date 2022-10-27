@@ -16,9 +16,9 @@ public class Answer{
     @Id
     @GeneratedValue
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Post post;
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     private WebUser user;
     private String message;
     private Timestamp dateCreated;

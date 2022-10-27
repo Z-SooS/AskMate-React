@@ -17,7 +17,7 @@ public class Post {
     @Id
     @GeneratedValue
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private WebUser user;
     private String title;
     private String message;
