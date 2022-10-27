@@ -39,17 +39,17 @@ public class PostServiceController {
 
     @GetMapping("/posts/{page}")
     public ResponseEntity<Set<ResponsePostDetails>> getPostsWithDetails(@PathVariable int page,
-                                                        @RequestParam(defaultValue = "score") String orderBy,
-                                                        @RequestParam(defaultValue = "DESC") String orderDirString) {
+                                                        @RequestParam(name="order",defaultValue = "score") String orderBy,
+                                                        @RequestParam(name="direction",defaultValue = "DESC") String orderDirString) {
         var posts = postService.getPostsForPage(page,orderBy, orderDirString);
         return getResponseEntityDetailSet(posts);
     }
 
         @GetMapping("/tagged-posts/{page}")
     public ResponseEntity<Set<ResponsePostDetails>> getPostDetailsTaggedWith(@PathVariable int page,
-                                                              @RequestParam(defaultValue = "score") String orderBy,
-                                                              @RequestParam(defaultValue = "DESC") String orderDirString,
-                                                              @RequestParam int[] tagIds) {
+                                                                             @RequestParam(name="order",defaultValue = "score") String orderBy,
+                                                                             @RequestParam(name="direction",defaultValue = "DESC") String orderDirString,
+                                                                             @RequestParam("tags") int[] tagIds) {
         Set<Tag> tagSet = new HashSet<>();
         Arrays.stream(tagIds).forEach(tid -> tagSet.add(Tag.builder().id(tid).build()));
         var posts = postService.getPostsForPageWithTag(page,tagSet,orderBy,orderDirString);
