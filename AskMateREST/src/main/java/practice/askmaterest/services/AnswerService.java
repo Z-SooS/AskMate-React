@@ -2,9 +2,9 @@ package practice.askmaterest.services;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import practice.askmaterest.model.Answer;
-import practice.askmaterest.model.Post;
 import practice.askmaterest.services.daos.AnswerRepo;
 
 import java.util.List;
@@ -24,8 +24,9 @@ public class AnswerService {
     public List<Answer> getAnswerPreviewToPost(Long post) {
         return answerRepo.findAllByPost_Id(post,previewPage, Sort.by(Sort.Direction.DESC,"score"));
     }
-    public List<Answer> getAnswersToPost(Post post, int page) {
+    public List<Answer> getAnswersToPost(Long post, int page, String orderByColumn, String orderDirString) {
+        Sort.Direction orderDir = orderDirString.equals("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
         int numberOfAnswersPerPage = 10;
-        return answerRepo.findAllByPostOrderById(post,PageRequest.of(page, numberOfAnswersPerPage));
+        return answerRepo.findAllByPost_Id(post,PageRequest.of(page, numberOfAnswersPerPage),Sort.by(orderDir,orderByColumn));
     }
 }
