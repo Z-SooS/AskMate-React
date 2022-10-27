@@ -3,10 +3,7 @@ package practice.askmaterest.model;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -17,6 +14,7 @@ import java.sql.Timestamp;
 @Setter
 public class Answer{
     @Id
+    @GeneratedValue
     private Long id;
     @ManyToOne
     private Post post;

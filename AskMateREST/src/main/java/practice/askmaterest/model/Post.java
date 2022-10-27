@@ -15,6 +15,7 @@ import java.util.Set;
 @Setter
 public class Post {
     @Id
+    @GeneratedValue
     private Long id;
     @ManyToOne
     private WebUser user;
