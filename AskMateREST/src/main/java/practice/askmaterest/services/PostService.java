@@ -1,6 +1,7 @@
 package practice.askmaterest.services;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import practice.askmaterest.model.Post;
 import practice.askmaterest.services.daos.PostRepo;
@@ -17,8 +18,9 @@ public class PostService {
         this.postRepo = postRepo;
     }
 
-    public List<Post> getPostsForPage(int page) {
-        return postRepo.findAll(PageRequest.of(page,numberOfPostsPerPage)).getContent();
+    public List<Post> getPostsForPage(int page, String orderColumn, String orderDirString) {
+        return postRepo.findAll(PageRequest.of(page,numberOfPostsPerPage),
+                Sort.by(orderDirString.equals("DESC")? Sort.Direction.DESC: Sort.Direction.ASC,orderColumn));
     }
 
     public void SavePost(Post post) {

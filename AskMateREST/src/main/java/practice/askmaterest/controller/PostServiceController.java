@@ -37,9 +37,11 @@ public class PostServiceController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/get-post-page/{page}")
-    public Set<ResponsePostDetails> getPostsWithDetails(@PathVariable int page) {
-        var posts = postService.getPostsForPage(page);
+    @GetMapping("/posts/{page}")
+    public Set<ResponsePostDetails> getPostsWithDetails(@PathVariable int page,
+                                                        @RequestParam(defaultValue = "score") String orderBy,
+                                                        @RequestParam(defaultValue = "DESC") String orderDirString) {
+        var posts = postService.getPostsForPage(page,orderBy, orderDirString);
         var details = new HashSet<ResponsePostDetails>();
         for (Post post : posts) {
             var answersToPost = answerService.getAnswerPreviewToPost(post);
