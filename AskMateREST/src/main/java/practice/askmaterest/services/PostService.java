@@ -20,4 +20,8 @@ public class PostService {
     public List<Post> getPostsForPage(int page) {
         return postRepo.findAll(PageRequest.of(page,numberOfPostsPerPage)).getContent();
     }
+
+    public void SavePost(Post post) {
+        postRepo.save(post);
+    }
 }

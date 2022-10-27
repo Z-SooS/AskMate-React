@@ -30,13 +30,11 @@ public class PostServiceController {
     }
     @PostMapping("/add-post")
     public ResponseEntity<Post> addPost(@RequestBody Post newPost, HttpServletRequest request) {
-        // TODO: 2022. 10. 21. Web user service dies from null username
-        System.out.println(request.getHeader("user"));
-        var optionalWebUser = webUserService.getUserByUsername(request.getHeader("user"));
-        if(optionalWebUser.isEmpty()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        newPost.setUser(optionalWebUser.get());
-        System.out.println(newPost.getUser().getUsername());
-        return ResponseEntity.status(HttpStatus.CONTINUE).build();
+        var webUser = webUserService.getUserByUsername(request.getHeader("user"));
+        if(webUser == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        newPost.setUser(webUser);
+        postService.SavePost(newPost);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/get-post-page/{page}")
