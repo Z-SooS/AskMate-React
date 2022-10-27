@@ -28,8 +28,7 @@ public class WebUserService {
     }
 
     public boolean AddWebUserIfNotExist(WebUser user) {
-        byte numberOfUsersWithThisName = webUserRepo.countByUsername(user.getUsername());
-        if (numberOfUsersWithThisName> 0) return false;
+        if (webUserRepo.existsById(user.getUsername())) return false;
         user.setPassword(passwordAgent.hashPassword(user.getPassword()));
         user.setReputation(0);
         user.setRole(AskRole.USER);
@@ -37,8 +36,7 @@ public class WebUserService {
         return true;
     }
     public boolean AddAdminUserIfNotExist(WebUser user) {
-        byte numberOfUsersWithThisName = webUserRepo.countByUsername(user.getUsername());
-        if (numberOfUsersWithThisName> 0) return false;
+        if (webUserRepo.existsById(user.getUsername())) return false;
         user.setPassword(passwordAgent.hashPassword(user.getPassword()));
         user.setReputation(0);
         user.setRole(AskRole.ADMIN);
