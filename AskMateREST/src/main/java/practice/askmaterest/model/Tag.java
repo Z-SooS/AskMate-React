@@ -3,6 +3,7 @@ package practice.askmaterest.model;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 @Setter
 public class Tag{
     @Id
-    private Long id;
+    @GeneratedValue
+    private Integer id;
     private String name;
 }

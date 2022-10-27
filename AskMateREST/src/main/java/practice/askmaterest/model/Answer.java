@@ -3,9 +3,8 @@ package practice.askmaterest.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @AllArgsConstructor
@@ -15,11 +14,14 @@ import javax.persistence.ManyToOne;
 @Setter
 public class Answer{
     @Id
+    @GeneratedValue
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Post post;
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     private WebUser user;
     private String message;
-    private String imageUrl;
+    private Timestamp dateCreated;
+    @Column(columnDefinition = "integer default 0")
+    private int score;
 }

@@ -5,6 +5,7 @@ import lombok.*;
 import practice.askmaterest.model.modelenum.AskRole;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @AllArgsConstructor
@@ -28,6 +29,8 @@ public class WebUser {
 
     @Enumerated(EnumType.STRING)
     private AskRole role;
+
+    private Timestamp dateCreated;
 
     @JsonIgnore
     public String getPassword() {

@@ -14,7 +14,6 @@ import practice.askmaterest.security.EncoderAgent;
 import practice.askmaterest.services.WebUserService;
 
 import javax.servlet.http.HttpServletResponse;
-import java.net.URI;
 
 @RestController
 @RequestMapping("${user_service_path}")
@@ -36,13 +35,13 @@ public class UserAuthController {
 
         CookieMethods.getJWTCookies(encoderAgent.generateJwt(loginDetails.getUsername(),loginDetails.getEmail(),userRole)).forEach(response::addCookie);
 
-        return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI.create("/")).build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping("/register")
     public ResponseEntity<Void> doRegister(@RequestBody RegistrationDetails newUserDetails) {
         boolean userDidNotExist = webUserService.AddWebUserIfNotExist(newUserDetails.toUser());
-        if(userDidNotExist) return ResponseEntity.status(HttpStatus.CREATED).location(URI.create("/")).build();
+        if(userDidNotExist) return ResponseEntity.status(HttpStatus.CREATED).build();
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 }
