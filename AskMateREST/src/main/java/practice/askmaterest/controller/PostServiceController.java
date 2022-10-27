@@ -60,7 +60,7 @@ public class PostServiceController {
         if (posts.size()<=0) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         var details = new HashSet<ResponsePostDetails>();
         for (Post post : posts) {
-            var answersToPost = answerService.getAnswerPreviewToPost(post);
+            var answersToPost = answerService.getAnswerPreviewToPost(post.getId());
             details.add(ResponsePostDetails.builder().post(post).answers(answersToPost).build());
         }
         return ResponseEntity.status(HttpStatus.OK).body(details);

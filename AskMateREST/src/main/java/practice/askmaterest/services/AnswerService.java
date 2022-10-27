@@ -21,8 +21,8 @@ public class AnswerService {
         this.answerRepo = answerRepo;
     }
 
-    public List<Answer> getAnswerPreviewToPost(Post post) {
-        return answerRepo.findAllByPostOrderById(post,previewPage);
+    public List<Answer> getAnswerPreviewToPost(Long post) {
+        return answerRepo.findAllByPost_Id(post,previewPage, Sort.by(Sort.Direction.DESC,"score"));
     }
     public List<Answer> getAnswersToPost(Post post, int page) {
         int numberOfAnswersPerPage = 10;
