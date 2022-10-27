@@ -7,7 +7,6 @@ import practice.askmaterest.model.Post;
 import practice.askmaterest.model.ResponsePostDetails;
 import practice.askmaterest.services.AnswerService;
 import practice.askmaterest.services.PostService;
-import practice.askmaterest.services.TagService;
 import practice.askmaterest.services.WebUserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,13 +18,11 @@ import java.util.Set;
 public class PostServiceController {
     private final PostService postService;
     private final AnswerService answerService;
-    private final TagService tagService;
     private final WebUserService webUserService;
 
-    public PostServiceController(PostService postService, AnswerService answerService, TagService tagService, WebUserService webUserService) {
+    public PostServiceController(PostService postService, AnswerService answerService, WebUserService webUserService) {
         this.postService = postService;
         this.answerService = answerService;
-        this.tagService = tagService;
         this.webUserService = webUserService;
     }
     @PostMapping("/add-post")
