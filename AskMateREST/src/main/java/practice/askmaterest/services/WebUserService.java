@@ -30,7 +30,7 @@ public class WebUserService {
     }
 
     public boolean AddWebUserIfNotExist(WebUser user) {
-        if (webUserRepo.existsById(user.getUsername())) return false;
+        if (webUserRepo.existsByUsernameOrEmail(user.getUsername(), user.getEmail())) return false;
         user.setPassword(passwordAgent.hashPassword(user.getPassword()));
         user.setReputation(0);
         user.setRole(AskRole.USER);
