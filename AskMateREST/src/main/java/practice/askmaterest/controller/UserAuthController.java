@@ -40,6 +40,7 @@ public class UserAuthController {
 
     @PostMapping("/register")
     public ResponseEntity<Void> doRegister(@RequestBody RegistrationDetails newUserDetails) {
+        if(!newUserDetails.isValidEmail() || !newUserDetails.isValidUsername() || !newUserDetails.isValidPassword()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         boolean userDidNotExist = webUserService.AddWebUserIfNotExist(newUserDetails.toUser());
         if(userDidNotExist) return ResponseEntity.status(HttpStatus.CREATED).build();
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
