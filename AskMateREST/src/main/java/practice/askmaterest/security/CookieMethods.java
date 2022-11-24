@@ -38,6 +38,8 @@ public class CookieMethods {
         payloadCookie.setSecure(true);
         payloadCookie.setMaxAge(-1);
         signatureCookie.setMaxAge(-1);
+        payloadCookie.setDomain("localhost");
+        signatureCookie.setDomain("localhost");
 
         cookies.add(signatureCookie);
         cookies.add(payloadCookie);
@@ -56,6 +58,8 @@ public class CookieMethods {
         payloadCookie.setSecure(true);
         payloadCookie.setMaxAge(0);
         signatureCookie.setMaxAge(0);
+        payloadCookie.setDomain("localhost");
+        signatureCookie.setDomain("localhost");
 
         cookies.add(signatureCookie);
         cookies.add(payloadCookie);
