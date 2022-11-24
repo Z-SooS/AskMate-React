@@ -37,6 +37,25 @@ public class CookieMethods {
         signatureCookie.setSecure(true);
         payloadCookie.setSecure(true);
         payloadCookie.setMaxAge(-1);
+        signatureCookie.setMaxAge(-1);
+
+        cookies.add(signatureCookie);
+        cookies.add(payloadCookie);
+        return cookies;
+    }
+
+    public static Set<Cookie> getEmptyCookies() {
+        Set<Cookie> cookies = new HashSet<>();
+
+        Cookie signatureCookie = new Cookie(CookieMethods.signatureCookie64,null);
+        Cookie payloadCookie = new Cookie(CookieMethods.headerPayloadCookie64, null);
+        signatureCookie.setPath("/");
+        payloadCookie.setPath("/");
+        signatureCookie.setHttpOnly(true);
+        signatureCookie.setSecure(true);
+        payloadCookie.setSecure(true);
+        payloadCookie.setMaxAge(0);
+        signatureCookie.setMaxAge(0);
 
         cookies.add(signatureCookie);
         cookies.add(payloadCookie);
