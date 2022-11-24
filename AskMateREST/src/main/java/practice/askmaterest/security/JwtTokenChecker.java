@@ -5,32 +5,28 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.web.filter.OncePerRequestFilter;
 import practice.askmaterest.model.modelenum.AskRole;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static practice.askmaterest.security.CookieMethods.*;
 
 
-public class JwtTokenChecker extends OncePerRequestFilter {
+public class JwtTokenChecker implements Filter {
     private final EncoderAgent encoderAgent;
 
     public JwtTokenChecker(EncoderAgent encoderAgent) {
         this.encoderAgent = encoderAgent;
     }
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    public void doFilter(ServletRequest req, ServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        HttpServletRequest request = (HttpServletRequest) req;
         String signature = getCookieValue(request,signatureCookie64);
         String headerPayload = getCookieValue(request,headerPayloadCookie64);
-        String usernameInHeader = request.getHeader("User");
 
-        if(Strings.isBlank(signature) || Strings.isBlank(headerPayload) || Strings.isBlank(usernameInHeader)) {
+        if(Strings.isBlank(signature) || Strings.isBlank(headerPayload) ) {
             setAuthority(AskRole.UNIDENTIFIED.name(),AskRole.UNIDENTIFIED);
             filterChain.doFilter(request, response);
             return;
@@ -39,11 +35,12 @@ public class JwtTokenChecker extends OncePerRequestFilter {
 
         boolean isInvalidToken = false;
         AskRole role = AskRole.UNIDENTIFIED;
+        String nameInToken = null;
         try {
-            var jwt = encoderAgent.tryValidateToken(usernameInHeader,headerPayload+"."+signature);
+            var jwt = encoderAgent.tryValidateToken(headerPayload+"."+signature);
             String requestRole = jwt.getClaim("role").toString();
             String cleanedRole = requestRole.substring(1, requestRole.length() - 1);
-
+            nameInToken = jwt.getSubject();
             role = AskRole.valueOf(cleanedRole);
         }catch (JWTVerificationException ignore) {
             isInvalidToken = true;
@@ -55,7 +52,7 @@ public class JwtTokenChecker extends OncePerRequestFilter {
             return;
         }
 
-        setAuthority(usernameInHeader,role);
+        setAuthority(nameInToken,role);
         filterChain.doFilter(request, response);
     }
     private void setAuthority(String subject, AskRole role) {

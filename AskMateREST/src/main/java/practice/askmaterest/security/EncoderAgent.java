@@ -27,9 +27,8 @@ public class EncoderAgent {
                 .withIssuer("AskMateSpring/AskMate")
                 .sign(Algorithm.HMAC256(secret));
     }
-    public DecodedJWT tryValidateToken(String subject, String token) throws JWTVerificationException{
+    public DecodedJWT tryValidateToken(String token) throws JWTVerificationException{
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
-                .withSubject(subject)
 //                .withClaim("email", email)
 //                .withClaim("role", role)
                 .withIssuer("AskMateSpring/AskMate")
