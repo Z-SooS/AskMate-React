@@ -34,9 +34,9 @@ public class ApplicationSecurityConfig {
         security.httpBasic().disable();
         security.addFilterBefore(new JwtTokenChecker(encoderAgent), UsernamePasswordAuthenticationFilter.class);
         // TODO: 2022. 10. 19. Use filterChain, unsafe while developing
-        security.authorizeRequests().antMatchers(userServicePath+"/*").hasAnyAuthority(AskRole.UNIDENTIFIED.name(),AskRole.USER.name(),AskRole.ADMIN.name());
-        security.authorizeRequests().antMatchers(postServicePath+"/*").hasAnyAuthority(AskRole.USER.name(),AskRole.ADMIN.name());
-        security.authorizeRequests().antMatchers(tagServicePath+"/*").hasAnyAuthority(AskRole.USER.name(),AskRole.ADMIN.name());
+        security.authorizeRequests().antMatchers(userServicePath+"/**").hasAnyAuthority(AskRole.UNIDENTIFIED.name(),AskRole.USER.name(),AskRole.ADMIN.name());
+        security.authorizeRequests().antMatchers(postServicePath+"/**").hasAnyAuthority(AskRole.USER.name(),AskRole.ADMIN.name());
+        security.authorizeRequests().antMatchers(tagServicePath+"/**").hasAnyAuthority(AskRole.USER.name(),AskRole.ADMIN.name());
         security.csrf().disable();
         return security.build();
     }
