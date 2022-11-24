@@ -21,7 +21,7 @@ public class Post {
     private WebUser user;
     private String title;
     private String message;
-    @OneToMany
+    @ManyToMany
     private Set<Tag> tags;
     @Column(columnDefinition = "integer default 0")
     private int score;
