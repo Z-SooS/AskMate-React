@@ -2,10 +2,7 @@ package practice.askmaterest.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import practice.askmaterest.model.modelenum.AskRole;
 import practice.askmaterest.model.securityModel.LoginDetails;
 import practice.askmaterest.model.securityModel.RegistrationDetails;
@@ -44,5 +41,10 @@ public class UserAuthController {
         boolean userDidNotExist = webUserService.AddWebUserIfNotExist(newUserDetails.toUser());
         if(userDidNotExist) return ResponseEntity.status(HttpStatus.CREATED).build();
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
+    @GetMapping("/logout")
+    public void doLogout(HttpServletResponse response) {
+        CookieMethods.getEmptyCookies().forEach(response::addCookie);
     }
 }
