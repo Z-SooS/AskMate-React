@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import practice.askmaterest.model.modelenum.AskRole;
 import practice.askmaterest.model.securityModel.LoginDetails;
-import practice.askmaterest.model.securityModel.RegistrationDetails;
 import practice.askmaterest.security.CookieMethods;
 import practice.askmaterest.security.EncoderAgent;
 import practice.askmaterest.services.WebUserService;
@@ -36,7 +35,7 @@ public class UserAuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> doRegister(@RequestBody RegistrationDetails newUserDetails) {
+    public ResponseEntity<Void> doRegister(@RequestBody LoginDetails newUserDetails) {
         if(!newUserDetails.isValidEmail() || !newUserDetails.isValidUsername() || !newUserDetails.isValidPassword()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         boolean userDidNotExist = webUserService.AddWebUserIfNotExist(newUserDetails.toUser());
         if(userDidNotExist) return ResponseEntity.status(HttpStatus.CREATED).build();
