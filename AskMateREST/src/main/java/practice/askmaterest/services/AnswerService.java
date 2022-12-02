@@ -29,4 +29,8 @@ public class AnswerService {
         int numberOfAnswersPerPage = 10;
         return answerRepo.findAllByPost_Id(post,PageRequest.of(page, numberOfAnswersPerPage,Sort.by(orderDir,orderByColumn)));
     }
+
+    public void addAnswer(Answer newAnswer) {
+        answerRepo.save(newAnswer);
+    }
 }
