@@ -5,7 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import practice.askmaterest.model.Post;
 import practice.askmaterest.model.ResponsePostDetails;
-import practice.askmaterest.model.Tag;
+import practice.askmaterest.model.WebUser;
+import practice.askmaterest.security.CookieMethods;
+import practice.askmaterest.security.EncoderAgent;
 import practice.askmaterest.services.AnswerService;
 import practice.askmaterest.services.PostService;
 import practice.askmaterest.services.WebUserService;
@@ -23,14 +25,18 @@ public class PostServiceController {
     private final AnswerService answerService;
     private final WebUserService webUserService;
 
-    public PostServiceController(PostService postService, AnswerService answerService, WebUserService webUserService) {
+    private final EncoderAgent encoderAgent;
+
+    public PostServiceController(PostService postService, AnswerService answerService, WebUserService webUserService, EncoderAgent encoderAgent) {
         this.postService = postService;
         this.answerService = answerService;
         this.webUserService = webUserService;
+        this.encoderAgent = encoderAgent;
     }
     @PostMapping("/add-post")
     public ResponseEntity<Post> addPost(@RequestBody Post newPost, HttpServletRequest request) {
-        var webUser = webUserService.getUserByUsername(request.getHeader("user"));
+        String username = encoderAgent.getValueFromJwtCookie("subject", CookieMethods.getCookieValue(request,CookieMethods.headerPayloadCookie64)+"."+CookieMethods.getCookieValue(request,CookieMethods.signatureCookie64));
+        WebUser webUser = webUserService.getUserByUsername(username);
         if(webUser == null) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         newPost.setUser(webUser);
         postService.SavePost(newPost);
