@@ -42,4 +42,9 @@ public class EncoderAgent {
     public static String base64Decode(String encodedString) {
         return new String(Base64.getUrlDecoder().decode(encodedString));
     }
+
+    public String getValueFromJwtCookie(String key, String jwtPayload) {
+        if(key.equals("subject")) return JWT.decode(jwtPayload).getSubject();
+        return JWT.decode(jwtPayload).getClaim(key).asString();
+    }
 }
