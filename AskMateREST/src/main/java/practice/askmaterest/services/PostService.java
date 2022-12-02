@@ -28,6 +28,10 @@ public class PostService {
                 );
     }
 
+    public Post getPost(Long id) {
+        return postRepo.findById(id).orElse(null);
+    }
+
     public void SavePost(Post post) {
         postRepo.save(post);
     }
