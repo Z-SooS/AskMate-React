@@ -10,5 +10,4 @@ import java.util.List;
 public class ResponsePostDetails {
     private Post post;
     private List<Answer> answers;
-    private String userId;
 }
