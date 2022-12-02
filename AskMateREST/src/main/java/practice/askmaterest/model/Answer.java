@@ -1,6 +1,7 @@
 package practice.askmaterest.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,6 +18,7 @@ public class Answer{
     @GeneratedValue
     private Long id;
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private Post post;
     @ManyToOne(cascade=CascadeType.ALL)
     private WebUser user;
