@@ -7,9 +7,12 @@ function App() {
     return (
         <>
             <main>
-                <Navbar/>
                 <Routes>
-                    <Route path={'/'} element={<LoginPage/>}/>
+                    <Route path={"/"} element={<HomePage userInfo={userInfo}/>}/>
+                    <Route path={'/login'} element={<LoginPage userInfoSetter={setUserInfo} getUserInfoFromCookie={checkCookieForUsername}/>}/>
+                    <Route path={"/posts"} element={<PostsPage/>}/>
+                    <Route path={"/register"} element={<RegisterPage/>}/>
+                    {/*<Route path={"/profile"} element={<RegisterPage/>}/>*/}
                 </Routes>
             </main>
         </>
