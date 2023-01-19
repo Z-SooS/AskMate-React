@@ -18,20 +18,22 @@ public class EncoderAgent {
     @Value("${jwt_secret}")
     private String secret;
 
+    private final String issuer = "AskMateSpring/AskMate";
+
     public String generateJwt(String username, String email, AskRole role) throws IllegalArgumentException, JWTCreationException {
         return JWT.create()
                 .withSubject(username)
                 .withClaim("email", email)
                 .withClaim("role",role.name())
                 .withIssuedAt(new Date())
-                .withIssuer("AskMateSpring/AskMate")
+                .withIssuer(issuer)
                 .sign(Algorithm.HMAC256(secret));
     }
     public DecodedJWT tryValidateToken(String token) throws JWTVerificationException{
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
 //                .withClaim("email", email)
 //                .withClaim("role", role)
-                .withIssuer("AskMateSpring/AskMate")
+                .withIssuer(issuer)
                 .build();
         return verifier.verify(token);
     }
