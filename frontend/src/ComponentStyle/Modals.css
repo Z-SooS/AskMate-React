@@ -1,0 +1,41 @@
+.background-shade {
+    box-sizing: border-box;
+    position: fixed;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    position: relative;
+    width: 60vw;
+    min-height: 60vh;
+    background-color: white;
+    border-radius: 10px;
+    border: darkslategray 0.3rem solid;
+    padding: 1rem;
+    box-shadow: 0 0 10rem black;
+}
+
+.close-modal-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none!important;
+    border: none;
+    color: darkslategray;
+    opacity: 50%;
+    font-size: x-large;
+    cursor: pointer;
+}
+.close-modal-button:hover {
+    opacity: 1;
+}
+
