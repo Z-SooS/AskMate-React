@@ -2,6 +2,7 @@ package practice.askmaterest.model;
 
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -25,5 +26,7 @@ public class Post {
     private Set<Tag> tags;
     @Column(columnDefinition = "integer default 0")
     private int score;
+    @Column(nullable = false)
+    @CreationTimestamp
     private Timestamp dateCreated;
 }

@@ -2,6 +2,7 @@ package practice.askmaterest.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import practice.askmaterest.model.modelenum.AskRole;
 
 import javax.persistence.*;
@@ -30,6 +31,8 @@ public class WebUser {
     @Enumerated(EnumType.STRING)
     private AskRole role;
 
+    @Column(nullable = false)
+    @CreationTimestamp
     private Timestamp dateCreated;
 
     @JsonIgnore
