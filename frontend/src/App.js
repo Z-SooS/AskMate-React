@@ -11,8 +11,18 @@ import PageFooter from "./Component/PageFooter";
 import HomePage from "./Page/HomePage";
 
 function App() {
+    function checkCookieForUsername(){
+        const headerPayloadValue = CookieMethods.getJwtPayload();
+        if (headerPayloadValue == null) {
+            return null;
+        }
+        return cookieMethods.parseJwt(headerPayloadValue);
+    }
+    const [userInfo, setUserInfo] = useState(checkCookieForUsername());
+
     return (
         <>
+                <Navbar userInfo={userInfo} userInfoSetter={setUserInfo}/>
             <main>
                 <Routes>
                     <Route path={"/"} element={<HomePage userInfo={userInfo}/>}/>
@@ -22,6 +32,7 @@ function App() {
                     {/*<Route path={"/profile"} element={<RegisterPage/>}/>*/}
                 </Routes>
             </main>
+            <PageFooter/>
         </>
     );
 }
