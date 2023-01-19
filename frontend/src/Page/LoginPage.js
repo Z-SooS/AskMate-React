@@ -1,10 +1,13 @@
 import React from 'react';
+import LabeledFormInput from "../Component/LabeledFormInput";
+import {fieldName} from "../Config/FormFieldData";
 
-function LoginPage(props) {
+function LoginPage({userInfoSetter, getUserInfoFromCookie}) {
     async function sendLoginRequest(event){
         event.preventDefault();
-        const username = document.getElementById("username-field").value;
-        const password = document.getElementById("password-field").value;
+        const form = new FormData(event.currentTarget);
+        const username = form.get(fieldName.username);
+        const password = form.get(fieldName.password);
 
 
         await fetch("/api/user-service/login",{
@@ -16,19 +19,19 @@ function LoginPage(props) {
                 'username':username,
                 'password':password
             })
+        }).then((r) =>{
+            if(r.status === 200) {
+                userInfoSetter(getUserInfoFromCookie());
+                return;
+            }
+            // ToDo Throw Error
         })
     }
 
     return (
         <form id={"login-form"} onSubmit={sendLoginRequest}>
-            <label id={"username-label"} htmlFor={"username"}>
-                Username:
-                <input type={"text"} id={"username-field"} name={"username"}/>
-            </label>
-            <label id={"password-label"} htmlFor={"password"}>
-                Password:
-                <input type={"password"} id={"password-field"} name={"password"}/>
-            </label>
+            <LabeledFormInput label={"Username"} name={fieldName.username} inputType={"text"}/>
+            <LabeledFormInput label={"Password"} name={fieldName.password} inputType={"password"}/>
             <button type={"submit"}>Submit</button>
         </form>
     );
