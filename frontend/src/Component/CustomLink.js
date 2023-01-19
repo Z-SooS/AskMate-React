@@ -6,7 +6,7 @@ function CustomLink({to,children}) {
     const isActive = useMatch({path: resolvedPath.pathname, end: true})
     return (
         <li className={isActive && "active"}>
-            <Link to={to}>{children}</Link>
+            <Link className={"navbar-link"} to={to}>{children}</Link>
         </li>
     );
 }
