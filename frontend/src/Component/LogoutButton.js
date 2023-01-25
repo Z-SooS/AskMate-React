@@ -1,8 +1,9 @@
 import React from 'react';
+import APIRequests from "../Utility/APIRequests";
 
 function LogoutButton({userInfoNuller}) {
     async function logoutFunction(){
-        await fetch("/api/user-service/logout");
+        await APIRequests.get("/user-service/logout");
         userInfoNuller();
     }
     return (

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import LoadingIndicator from "../Component/LoadingIndicator";
 import PostContainer from "../Component/PostContainer";
 import AddPostModal from "../Component/AddPostModal";
+import APIRequests from "../Utility/APIRequests";
 
 function PostsPage(props) {
     let [data, setData] = useState([]);
@@ -12,7 +13,7 @@ function PostsPage(props) {
     const [loading, setLoading] = useState(true);
 
     async function getData(){
-        await fetch(`/api/post-service/posts/${page}?order=${orderBy}&direction=${orderDir}`)
+        await APIRequests.get(`/post-service/posts/${page}?order=${orderBy}&direction=${orderDir}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`The returned response was ${response.status}`);

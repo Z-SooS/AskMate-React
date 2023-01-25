@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import LoadingIndicator from "../Component/LoadingIndicator";
 import {fieldType,fieldName} from "../Config/FormFieldData";
 import LabeledFormInput from "../Component/LabeledFormInput";
+import APIRequests from "../Utility/APIRequests";
 
 const minPasswordLength = 6;
 const minUsernameLength = 4;
@@ -66,16 +67,10 @@ function RegisterPage() {
             const username = document.getElementById(fieldName.username+fieldType.input).value;
             const email = document.getElementById(fieldName.email+fieldType.input).value;
             setLoading(true);
-            let statusCode = await fetch("/api/user-service/register",{
-                method:"POST",
-                headers:{
-                    'Content-Type': 'application/json'
-                },
-                body:JSON.stringify({
-                    'username':username,
-                    'password':password,
-                    'email':email
-                })
+            let statusCode = await APIRequests.post("/user-service/register",{
+                'username':username,
+                'password':password,
+                'email':email
             }).then(response => response.status);
             setLoading(false);
             if(statusCode === 409) {
