@@ -4,6 +4,7 @@ import {fieldName, fieldType} from "../Config/FormFieldData";
 import Select from "react-select";
 import LoadingIndicator from "./LoadingIndicator";
 import '../ComponentStyle/Modals.css';
+import APIRequests from "../Utility/APIRequests";
 
 function AddPostModal({reloadFunction}) {
     const [tagData, setTagData] = useState(null);
@@ -17,7 +18,7 @@ function AddPostModal({reloadFunction}) {
         }
 
         async function getTags() {
-            await fetch("/api/tag-service/all-tags")
+            await APIRequests.get("/tag-service/all-tags")
                 .then(r => {
                     if (!r.ok) throw new Error(`Request returned with ${r.status}`)
                     return r.json();
@@ -58,17 +59,12 @@ function AddPostModal({reloadFunction}) {
             return {id: t.value, name: t.label}
         });
 
-        await fetch("/api/post-service/add-post", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "title": title,
-                "message": message,
-                "tags": tags
-            })
-        }).then(()=>{reloadFunction()})
+        await APIRequests.post("/post-service/add-post",{
+            "title": title,
+            "message": message,
+            "tags": tags
+        })
+        .then(()=>{reloadFunction()})
     }
 
 

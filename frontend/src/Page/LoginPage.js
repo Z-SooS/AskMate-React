@@ -1,6 +1,7 @@
 import React from 'react';
 import LabeledFormInput from "../Component/LabeledFormInput";
 import {fieldName} from "../Config/FormFieldData";
+import APIRequests from "../Utility/APIRequests";
 
 function LoginPage({userInfoSetter, getUserInfoFromCookie}) {
     async function sendLoginRequest(event){
@@ -9,17 +10,11 @@ function LoginPage({userInfoSetter, getUserInfoFromCookie}) {
         const username = form.get(fieldName.username);
         const password = form.get(fieldName.password);
 
-
-        await fetch("/api/user-service/login",{
-            method:"POST",
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            body:JSON.stringify({
-                'username':username,
-                'password':password
-            })
-        }).then((r) =>{
+        await APIRequests.post("/user-service/login",{
+            'username':username,
+            'password':password
+        })
+        .then((r) =>{
             if(r.status === 200) {
                 userInfoSetter(getUserInfoFromCookie());
                 return;
