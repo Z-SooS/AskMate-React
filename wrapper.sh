@@ -2,6 +2,6 @@
 echo "starting container"
 
 java -jar app.jar &
-serve -s build & 
+npm run debug &
 wait
 #tail -f /dev/null

@@ -27,15 +27,18 @@ RUN npm install -g serve
 # copy apps to run
 RUN mkdir app
 WORKDIR app
-RUN mkdir build
-COPY ./frontend/build ./build
+COPY ./frontend ./
+RUN npm install
 COPY ./AskMateREST/target/${jarfile} ./app.jar
 RUN chmod 777 ./app.jar
 
-# currently unused file
 COPY ./wrapper.sh ./
 RUN chmod -x wrapper.sh
-#
+
+# Add to keystore
+COPY ./myCertificate.crt ./myCertificate.crt
+RUN keytool -importcert -noprompt -file myCertificate.crt -alias springboot -cacerts
+
 
 ENV spring.datasource.url null
 ENV spring.datasource.driver-class-name null
@@ -45,6 +48,7 @@ ENV spring.datasource.password null
 ENV jwt_secret null
 
 EXPOSE 3000
+#EXPOSE 8080
 EXPOSE 1433
 CMD bash wrapper.sh
 #ENTRYPOINT ["tail", "-f", "/dev/null"]

@@ -1,7 +1,3 @@
-call cd frontend
-call npm install
-call npm run build
-call cd ..
 call cd AskMateREST
 call mvn package -Dmaven.test.skip=true
 call cd ..
