@@ -39,7 +39,8 @@ function App() {
             <BreadCrumbs breadCrumbSetUp={setUpBreadCrumbs}/>
             <main>
                 <Routes>
-                    <Route path={"/"} element={<HomePage userInfo={userInfo}/>}/>
+                    <Route path={"/"} element={<HomePage userInfo={userInfo} breadCrumbSetFunc={passDownBreadCrumbSetFunc}/>}/>
+                    <Route path={"/home"} element={<HomePage userInfo={userInfo} breadCrumbSetFunc={passDownBreadCrumbSetFunc}/>}/>
                     <Route path={'/login'} element={<LoginPage userInfoSetter={setUserInfo} getUserInfoFromCookie={checkCookieForUsername}/>}/>
                     <Route path={"/posts"} element={<PostsPage/>}/>
                     <Route path={"/register"} element={<RegisterPage/>}/>
