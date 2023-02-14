@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoadingIndicator from "../Component/LoadingIndicator";
 import {fieldType,fieldName} from "../Config/FormFieldData";
 import LabeledFormInput from "../Component/LabeledFormInput";
 import APIRequests from "../Utility/APIRequests";
+import breadCrumbFunctions from "../Utility/BreadCrumbFunctions";
 
 const minPasswordLength = 6;
 const minUsernameLength = 4;
@@ -11,6 +12,10 @@ const minUsernameLength = 4;
 function RegisterPage() {
     const [loading, setLoading] = useState(false);
     const [invalidRequestError, setInvalidRequestError] = useState(null);
+
+    useEffect(()=>{
+        breadCrumbFunctions.set(new Map([['Home','home'],['Register','register']]));
+    },[])
 
     function isUsernameValid(){
         const username = document.getElementById(fieldName.username+fieldType.input).value;

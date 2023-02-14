@@ -1,9 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import LabeledFormInput from "../Component/LabeledFormInput";
 import {fieldName} from "../Config/FormFieldData";
 import APIRequests from "../Utility/APIRequests";
+import BreadCrumbFunctions from "../Utility/BreadCrumbFunctions";
 
 function LoginPage({userInfoSetter, getUserInfoFromCookie}) {
+    useEffect(() => {
+        BreadCrumbFunctions.set(new Map([['Home','home'],['Login','login']]))
+    }, []);
+
+
     async function sendLoginRequest(event){
         event.preventDefault();
         const form = new FormData(event.currentTarget);

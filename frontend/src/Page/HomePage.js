@@ -1,8 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import CustomLink from "../Component/CustomLink";
 import "../ComponentStyle/HomePage.css"
+import breadCrumbFunctions from "../Utility/BreadCrumbFunctions";
 
 function HomePage({userInfo}) {
+    useEffect(()=>{
+        breadCrumbFunctions.set(new Map([['Home','home']]));
+    },[])
     return (
         <>
             <section id={"home-page-title"}>
