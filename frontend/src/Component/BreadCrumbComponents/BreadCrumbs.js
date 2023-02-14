@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import BreadCrumbLink from "./BreadCrumbLink";
+import breadCrumbFunctions from "../../Utility/BreadCrumbFunctions";
 
-function BreadCrumbs({breadCrumbSetUp}) {
+function BreadCrumbs() {
     const [links, setLinks] = useState(new Map([['Home', 'home']]));
     function addBreadCrumb(name, value){
-        let copy = Object.assign({}, links);
+        let copy = new Map(links);
         copy.set(name,value);
         setLinks(copy);
     }
@@ -12,8 +13,8 @@ function BreadCrumbs({breadCrumbSetUp}) {
         setLinks(valuemap);
     }
     useEffect(() => {
-        breadCrumbSetUp(setBreadCrumb, addBreadCrumb);
-    }, []);
+        breadCrumbFunctions.setUpBreadCrumb(addBreadCrumb,setBreadCrumb)
+    }, [addBreadCrumb]);
     const breadCrumb = [];
     for (let [key,value] of links) {
         if(breadCrumb.length >= 1){

@@ -19,31 +19,22 @@ function App() {
         }
         return cookieMethods.parseJwt(headerPayloadValue);
     }
-    let breadCrumbSetFunc;
-    let breadCrumbAddFunc;
-    function passDownBreadCrumbAddFunc(name,value){
-        breadCrumbAddFunc(name,value);
-    }
-    function passDownBreadCrumbSetFunc(values = new Map([['Home','home']])){
-        breadCrumbSetFunc(values);
-    }
-    function setUpBreadCrumbs(gotResetFunction,gotAddFunction){
-        breadCrumbSetFunc = gotResetFunction;
-        breadCrumbAddFunc = gotAddFunction;
-    }
     const [userInfo, setUserInfo] = useState(checkCookieForUsername());
 
     return (
         <>
                 <Navbar userInfo={userInfo} userInfoSetter={setUserInfo}/>
-            <BreadCrumbs breadCrumbSetUp={setUpBreadCrumbs}/>
+            <BreadCrumbs/>
             <main>
                 <Routes>
-                    <Route path={"/"} element={<HomePage userInfo={userInfo} breadCrumbSetFunc={passDownBreadCrumbSetFunc}/>}/>
-                    <Route path={"/home"} element={<HomePage userInfo={userInfo} breadCrumbSetFunc={passDownBreadCrumbSetFunc}/>}/>
-                    <Route path={'/login'} element={<LoginPage userInfoSetter={setUserInfo} getUserInfoFromCookie={checkCookieForUsername}/>}/>
-                    <Route path={"/posts"} element={<PostsPage/>}/>
+                    <Route path={"/"} element={<HomePage userInfo={userInfo}/>}/>
+                    <Route path={"/home"} element={<HomePage userInfo={userInfo}/>}/>
+                    <Route path={"/posts"}>
+                        <Route path={':pageFromPath'} element={<PostsPage/>}/>
+                        <Route path={''} element={<PostsPage/>}/>
+                    </Route>
                     <Route path={"/register"} element={<RegisterPage/>}/>
+                    <Route path={'/login'} element={<LoginPage userInfoSetter={setUserInfo} getUserInfoFromCookie={checkCookieForUsername}/>}/>
                     {/*<Route path={"/profile"} element={<RegisterPage/>}/>*/}
                 </Routes>
             </main>
