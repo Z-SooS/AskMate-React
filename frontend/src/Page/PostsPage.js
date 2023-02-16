@@ -22,7 +22,6 @@ function PostsPage() {
     const location = useLocation();
 
     async function getData(){
-        console.log('getData',tags);
         await APIRequests.get(`/post-service/posts/${page}?order=${orderBy}&direction=${orderDir}${tags.array.map(t => "&tag="+t).join()}`)
             .then(response => {
                 if (!response.ok) {
@@ -55,7 +54,6 @@ function PostsPage() {
                 ['Posts','posts']
             ]));
             setPage(0);
-            console.log('breadCrumb',page)
             return;
         }
         breadCrumbFunctions.set(new Map([
@@ -67,7 +65,7 @@ function PostsPage() {
     }
 
     function setQueryParams() {
-        console.log('query params', page)
+
         const queryParams = new URLSearchParams(location.search);
         const queryTags = new TagArray(queryParams.getAll('tag'));
         if (!queryTags.equals(tags)) {
@@ -78,7 +76,6 @@ function PostsPage() {
 
         if (order != null && order !== orderBy) setOrderBy(order);
         if (direction != null && direction !== orderDir) setOrderDir(direction);
-        console.log('queryParam page', pageFromPath ,page)
         if (pageFromPath != null) {
             setPage(parseInt(pageFromPath));
         } else {
@@ -86,16 +83,11 @@ function PostsPage() {
         }
     }
     useEffect(() => {
-        console.log('effect tags',tags)
-        console.log('effect order',orderBy)
-        console.log('effect dir',orderDir)
-        console.log('effect page',page)
         setBreadCrumb();
         setLoading(true);
         getData();
     }, [page,orderDir,orderBy,tags]);
     useEffect(() => {
-        console.log('location change',location)
         setPostIsOpen(false);
         setQueryParams();
     }, [location.pathname,location.search]);
