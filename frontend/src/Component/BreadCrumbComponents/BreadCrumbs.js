@@ -14,7 +14,8 @@ function BreadCrumbs() {
     }
     useEffect(() => {
         breadCrumbFunctions.setUpBreadCrumb(addBreadCrumb,setBreadCrumb)
-    }, [addBreadCrumb]);
+    }, []);
+
     const breadCrumb = [];
     for (let [key,value] of links) {
         if(breadCrumb.length >= 1){
