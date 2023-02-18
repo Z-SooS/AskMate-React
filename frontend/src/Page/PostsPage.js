@@ -7,19 +7,37 @@ import {useLocation, useParams} from "react-router-dom";
 import breadCrumbFunctions from "../Utility/BreadCrumbFunctions";
 import "../Utility/TagArray.js"
 
+// ToDo Delete console logs
 function PostsPage() {
+    function getOrderByFromQuery(){
+        const order = queryParams.get('order');
+        return order == null ? 'score' : order;
+    }
+    function getOrderDirFromQuery(){
+        const direction = queryParams.get('direction');
+        return direction == null ? 'DESC' : direction;
+    }
+    function getPageFromQuery(){
+        return pageFromPath != null ? parseInt(pageFromPath) : 0;
+    }
+    function getTagsFromQuery(){
+        return new TagArray(queryParams.getAll('tag'));
+    }
     const TagArray = require("../Utility/TagArray")
     const {pageFromPath} = useParams();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
     let [data, setData] = useState([]);
-    let [orderBy, setOrderBy] = useState("score");
-    let [orderDir, setOrderDir] = useState("DESC");
-    const [tags, setTags] = useState(new TagArray([]));
-    let [page,setPage] = useState(pageFromPath != null ? parseInt(pageFromPath) : 0);
+
+    let [orderBy, setOrderBy] = useState(getOrderByFromQuery());
+    let [orderDir, setOrderDir] = useState(getOrderDirFromQuery());
+    const [tags, setTags] = useState(getTagsFromQuery());
+    let [page,setPage] = useState(getPageFromQuery());
+
     let [postIsOpen, setPostIsOpen] = useState(false);
     const [error,setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const location = useLocation();
 
     async function getData(){
         console.log('getData',tags);
