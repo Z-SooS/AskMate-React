@@ -1,38 +1,51 @@
-.App {
-  text-align: center;
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: wheat;
+}
+main {
+  height: 100%;
+  width: 100%;
+  position: relative;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background: linear-gradient(45deg, lightseagreen, burlywood);
+  background-size: 400% 400%;
+
+  -webkit-animation: HomeAnim 5s ease infinite;
+  -moz-animation: HomeAnim 5s ease infinite;
+  -o-animation: HomeAnim 5s ease infinite;
+  animation: HomeAnim 5s ease infinite;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body.home {
+  background: linear-gradient(45deg, lightseagreen, slategray);
+  background-size: 400% 400%;
+
+  -webkit-animation: HomeAnim 5s ease infinite;
+  -moz-animation: HomeAnim 5s ease infinite;
+  -o-animation: HomeAnim 5s ease infinite;
+  animation: HomeAnim 5s ease infinite;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+@-webkit-keyframes HomeAnim {
+  0%{background-position:0% 69%}
+  50%{background-position:100% 32%}
+  100%{background-position:0% 69%}
 }
-
-.App-link {
-  color: #61dafb;
+@-moz-keyframes HomeAnime {
+  0%{background-position:0% 69%}
+  50%{background-position:100% 32%}
+  100%{background-position:0% 69%}
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@-o-keyframes HomeAnim {
+  0%{background-position:0% 69%}
+  50%{background-position:100% 32%}
+  100%{background-position:0% 69%}
+}
+@keyframes HomeAnim {
+  0%{background-position:0% 69%}
+  50%{background-position:100% 32%}
+  100%{background-position:0% 69%}
 }

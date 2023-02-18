@@ -2,16 +2,6 @@
     font-family: BlackChancery;
     src: url('../assets/BLKCHCRY.TTF');
 }
-html, body {
-    margin: 0;
-    padding: 0;
-}
-main {
-    background: linear-gradient(0deg, darkslategray 3%, lightseagreen 30%);
-    height: 100%;
-    width: 100%;
-    position: relative;
-}
 #home-page-title  {
     display: flex;
     justify-content: center;

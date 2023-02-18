@@ -8,7 +8,6 @@ import practice.askmaterest.model.ResponsePostDetails;
 import practice.askmaterest.model.WebUser;
 import practice.askmaterest.security.CookieMethods;
 import practice.askmaterest.security.EncoderAgent;
-import practice.askmaterest.services.AnswerService;
 import practice.askmaterest.services.PostService;
 import practice.askmaterest.services.WebUserService;
 
@@ -22,14 +21,12 @@ import java.util.Set;
 @RequestMapping("${post_service_path}")
 public class PostServiceController {
     private final PostService postService;
-    private final AnswerService answerService;
     private final WebUserService webUserService;
 
     private final EncoderAgent encoderAgent;
 
-    public PostServiceController(PostService postService, AnswerService answerService, WebUserService webUserService, EncoderAgent encoderAgent) {
+    public PostServiceController(PostService postService, WebUserService webUserService, EncoderAgent encoderAgent) {
         this.postService = postService;
-        this.answerService = answerService;
         this.webUserService = webUserService;
         this.encoderAgent = encoderAgent;
     }
@@ -43,7 +40,7 @@ public class PostServiceController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/posts/{page}")
+    @GetMapping(value = "/posts/{page}")
     public ResponseEntity<Set<ResponsePostDetails>> getPostsWithDetails(@PathVariable int page,
                                                         @RequestParam(name="order",defaultValue = "score") String orderBy,
                                                         @RequestParam(name="direction",defaultValue = "DESC") String orderDirString) {
@@ -51,11 +48,11 @@ public class PostServiceController {
         return getResponseEntityDetailSet(posts);
     }
 
-        @GetMapping("/tagged-posts/{page}")
+        @GetMapping(value = "/posts/{page}", params = "tag")
     public ResponseEntity<Set<ResponsePostDetails>> getPostDetailsTaggedWith(@PathVariable int page,
                                                                              @RequestParam(name="order",defaultValue = "score") String orderBy,
                                                                              @RequestParam(name="direction",defaultValue = "DESC") String orderDirString,
-                                                                             @RequestParam("tags") int[] tagIds) {
+                                                                             @RequestParam("tag") int[] tagIds) {
         Set<Integer> tagSet = new HashSet<>();
         Arrays.stream(tagIds).forEach(tagSet::add);
         var posts = postService.getPostsForPageWithTag(page,tagSet,orderBy,orderDirString);
@@ -66,8 +63,7 @@ public class PostServiceController {
         if (posts.size()<=0) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         var details = new HashSet<ResponsePostDetails>();
         for (Post post : posts) {
-            var answersToPost = answerService.getAnswerPreviewToPost(post.getId());
-            details.add(ResponsePostDetails.builder().post(post).answers(answersToPost).build());
+            details.add(ResponsePostDetails.ConvertFromPost(post));
         }
         return ResponseEntity.status(HttpStatus.OK).body(details);
     }

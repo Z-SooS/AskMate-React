@@ -1,6 +1,7 @@
 package practice.askmaterest.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -29,4 +30,7 @@ public class Post {
     @Column(nullable = false)
     @CreationTimestamp
     private Timestamp dateCreated;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Answer> answers;
 }
