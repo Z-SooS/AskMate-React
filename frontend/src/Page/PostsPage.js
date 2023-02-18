@@ -7,7 +7,6 @@ import {useLocation, useParams} from "react-router-dom";
 import breadCrumbFunctions from "../Utility/BreadCrumbFunctions";
 import "../Utility/TagArray.js"
 
-// ToDo Delete console logs
 function PostsPage() {
     function getOrderByFromQuery(){
         const order = queryParams.get('order');
@@ -72,7 +71,6 @@ function PostsPage() {
                 ['Posts','posts']
             ]));
             setPage(0);
-            console.log('breadCrumb',page)
             return;
         }
         breadCrumbFunctions.set(new Map([
@@ -85,7 +83,7 @@ function PostsPage() {
 
     function setQueryParams() {
         const queryTags = getTagsFromQuery();
-        if(!queryTags.equals(tags)) {console.log('stepped into tag if');setTags(queryTags)}
+        if(!queryTags.equals(tags)) setTags(queryTags)
 
         const order = getOrderByFromQuery();
         if(order !== orderBy) setOrderBy(order);
