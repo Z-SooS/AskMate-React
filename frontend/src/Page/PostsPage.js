@@ -40,7 +40,6 @@ function PostsPage() {
 
 
     async function getData(){
-        console.log('getData',tags);
         await APIRequests.get(`/post-service/posts/${page}?order=${orderBy}&direction=${orderDir}${tags.array.map(t => "&tag="+t).join()}`)
             .then(response => {
                 if (!response.ok) {
@@ -85,38 +84,24 @@ function PostsPage() {
     }
 
     function setQueryParams() {
-        console.log('query params', page)
-        const queryParams = new URLSearchParams(location.search);
-        const queryTags = new TagArray(queryParams.getAll('tag'));
-        if (!queryTags.equals(tags)) {
-            setTags(queryTags);
-        }
-        const order = queryParams.get('order');
-        const direction = queryParams.get('direction');
+        const queryTags = getTagsFromQuery();
+        if(!queryTags.equals(tags)) {console.log('stepped into tag if');setTags(queryTags)}
 
-        if (order != null && order !== orderBy) setOrderBy(order);
-        if (direction != null && direction !== orderDir) setOrderDir(direction);
-        console.log('queryParam page', pageFromPath ,page)
-        if (pageFromPath != null) {
-            setPage(parseInt(pageFromPath));
-        } else {
-            setPage(0);
-        }
+        const order = getOrderByFromQuery();
+        if(order !== orderBy) setOrderBy(order);
+
+        const direction = getOrderDirFromQuery();
+        if(direction !== orderDir) setOrderDir(direction);
+
+        const queryPage = getPageFromQuery();
+        if(queryPage !== page) setPage(queryPage);
     }
     useEffect(() => {
-        console.log('effect tags',tags)
-        console.log('effect order',orderBy)
-        console.log('effect dir',orderDir)
-        console.log('effect page',page)
+        setQueryParams();
         setBreadCrumb();
         setLoading(true);
         getData();
-    }, [page,orderDir,orderBy,tags]);
-    useEffect(() => {
-        console.log('location change',location)
-        setPostIsOpen(false);
-        setQueryParams();
-    }, [location.pathname,location.search]);
+    }, [page,orderDir,orderBy,tags,location.pathname,location.search]);
     if(error) return (<div className={"error"} id={"response-error-box"}>{`There is a problem fetching data from the server - ${error}`}</div>);
     return (
         <>
