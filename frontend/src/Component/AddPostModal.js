@@ -1,45 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import LabeledFormInput from "./LabeledFormInput";
-import {fieldName, fieldType} from "../Config/FormFieldData";
+import {fieldName} from "../Config/FormFieldData";
 import Select from "react-select";
 import LoadingIndicator from "./LoadingIndicator";
 import '../ComponentStyle/Modals.css';
 import APIRequests from "../Utility/APIRequests";
 
 function AddPostModal({reloadFunction}) {
-    const [tagData, setTagData] = useState(null);
     const [error, setError] = useState(null);
-    const [selectedTags, setSelectedTags] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    useEffect(() => {
-        if (isOpen === false) {
-            return;
-        }
 
-        async function getTags() {
-            await APIRequests.get("/tag-service/all-tags")
-                .then(r => {
-                    if (!r.ok) throw new Error(`Request returned with ${r.status}`)
-                    return r.json();
-                })
-                .then(rData => {
-                    setTagData(rData);
-                    setError(null);
-                })
-                .catch(err => {
-                    setTagData(null);
-                    setError(err.message);
-                });
-        }
+    const tagData = useRef(null);
 
-        getTags().then(() => {
-            setIsLoading(false);
-        });
-    }, [isOpen]);
+    const titleElement = useRef();
+    const messageElement = useRef();
+    let selectedTags = useRef([]);
 
-    function updateSelectedTags(selectedTags) {
-        setSelectedTags(selectedTags);
+    function updateSelectedTags(updatedTags) {
+        selectedTags.current = updatedTags;
     }
 
     function openModal() {
@@ -51,20 +30,42 @@ function AddPostModal({reloadFunction}) {
         setIsOpen(false);
     }
 
+    async function getTags() {
+        await APIRequests.get("/tag-service/all-tags")
+            .then(r => {
+                if (!r.ok) throw new Error(`Request returned with ${r.status}`)
+                return r.json();
+            })
+            .then(rData => {
+                tagData.current = rData;
+                setError(null);
+            })
+            .catch(err => {
+                tagData.current = null;
+                setError(err.message);
+            });
+    }
+
+    useEffect(() => {
+        if (isOpen === false) return;
+        if (tagData.current == null) getTags()
+            .then(() => {setIsLoading(false);});
+    }, [isOpen]);
+
     async function sendNewPostRequest(event) {
         event.preventDefault();
-        const title = document.getElementById(fieldName.postTitle + fieldType.input).value;
-        const message = document.getElementById(fieldName.postMessage + fieldType.input).value;
-        const tags = selectedTags.map(t => {
+
+        const tags = selectedTags.current.map(t => {
             return {id: t.value, name: t.label}
         });
 
+        // ToDo Sanitize strings
         await APIRequests.post("/post-service/add-post",{
-            "title": title,
-            "message": message,
+            "title": titleElement.current?.value,
+            "message": messageElement.current?.value,
             "tags": tags
         })
-        .then(()=>{reloadFunction()})
+        .then(()=>{reloadFunction();setIsOpen(false);});
     }
 
 
@@ -89,8 +90,8 @@ function AddPostModal({reloadFunction}) {
             </>
         )
     }
-    if (tagData != null) {
-        const selectOption = tagData.map(t => {
+    if (tagData.current != null) {
+        const selectOption = tagData.current.map(t => {
             return {value: t.id, label: t.name};
         });
         return (
@@ -100,8 +101,8 @@ function AddPostModal({reloadFunction}) {
                     <aside className={"modal"} id={"new-post-modal"}>
                         <button onClick={closeModal} className={"close-modal-button close-add-post-modal"}>x</button>
                         <form onSubmit={sendNewPostRequest}>
-                            <LabeledFormInput label={"Title"} name={fieldName.postTitle} inputType={"text"}/>
-                            <LabeledFormInput label={"Message"} name={fieldName.postMessage} inputType={"text"}/>
+                            <LabeledFormInput label={"Title"} name={fieldName.postTitle} inputType={"text"} refVariable={titleElement}/>
+                            <LabeledFormInput label={"Message"} name={fieldName.postMessage} inputType={"text"} refVariable={messageElement}/>
                             <Select
                                 isMulti
                                 options={selectOption}
